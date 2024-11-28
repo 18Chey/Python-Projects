@@ -11,6 +11,18 @@ class Tree:
         self.right = Tree(data)
 
 
+def print_tree(tree, prefix="\nRoot: ", level=0):
+    """Prints the tree."""
+    if tree:
+        print((" " * 3) * level + prefix + str(tree.data))
+        if tree.left:
+            print_tree(tree.left, "L: ", level + 1)
+        if tree.right:
+            print_tree(tree.right, "R: ", level + 1)
+    else:
+        pass
+
+
 def traverse(tree) -> None:
     """Prints in-order traversal of tree"""
     if tree:
@@ -47,9 +59,14 @@ def main() -> None:
     mytree = None
 
     while True:
-        mytree = insert(mytree, int(input("Data: ")))
-        traverse(mytree)
-        print(search(mytree, int(input("\nSearch"))))
+        try:
+            mytree = insert(mytree, int(input("Data: ")))
+            print_tree(mytree)
+        except:
+            print()
+            break
+
+    print_tree(mytree)
 
 
 if __name__ == "__main__":
