@@ -11,8 +11,8 @@ class Tree:
         self.right = Tree(data)
 
 
-def print_tree(tree, prefix="\nRoot: ", level=0):
-    """Prints the tree."""
+def print_tree(tree, prefix="Root: ", level=0):
+    """Prints the tree"""
     if tree:
         print((" " * 3) * level + prefix + str(tree.data))
         if tree.left:
@@ -23,7 +23,7 @@ def print_tree(tree, prefix="\nRoot: ", level=0):
         pass
 
 
-def traverse(tree) -> None:
+def traverse(tree: Tree | None) -> None:
     """Prints in-order traversal of tree"""
     if tree:
         traverse(tree.left)
@@ -31,7 +31,7 @@ def traverse(tree) -> None:
         traverse(tree.right)
 
 
-def insert(tree, data: int) -> Tree:
+def insert(tree: Tree | None, data: int) -> Tree:
     """Returns new version of tree with node inserted. If node data is equal to parent data, will be inserted on the left."""
     if tree == None:
         return Tree(data)
@@ -43,30 +43,71 @@ def insert(tree, data: int) -> Tree:
         return tree
 
 
-def search(tree, data) -> list[int | bool]:
-    """Returns path through tree and whether or not the item was found."""
+def minimum(tree: Tree) -> Tree:
+    """Returns minimum node of tree"""
+    while tree.left:
+        tree = tree.left
+    return tree
+
+
+def maximum(tree: Tree) -> Tree:
+    """Returns maximum node of tree"""
+    while tree.right:
+        tree = tree.right
+    return tree
+
+
+def search(tree: Tree | None, data: int) -> Tree | None:
+    """Returns subtree or None if not in tree."""
     if tree == None:
-        return [False]
+        return None
     elif tree.data == data:
-        return [True]
+        return tree
     elif tree.data < data:
-        return [1] + search(tree.right, data)
+        return search(tree.right, data)
     elif tree.data > data:
-        return [0] + search(tree.left, data)
+        return search(tree.left, data)
+
+
+def delete(tree: Tree | None, data: int) -> Tree:
+    """Returns new version of tree with node deleted"""
+
+    # Traverse tree until target node found
+    if tree == None:
+        return None
+    elif data < tree.data:
+        tree.left = delete(tree.left, data)
+    elif data > tree.data:
+        tree.right = delete(tree.right, data)
+    elif data == tree.data:
+
+        # Case 3: Node has two children, node replaced with maximum node from left subtree
+        if tree.left and tree.right:
+            successor = maximum(tree.left)
+            tree.data = successor.data
+            tree.left = delete(tree.left, successor.data)
+
+        # Case 2: Node has one child, node replaced with child
+        elif tree.left:
+            return tree.left
+        elif tree.right:
+            return tree.right
+
+        # Case 1: Node has no children, node deleted
+        else:
+            return None
+
+    return tree
 
 
 def main() -> None:
-    mytree = None
+    root = None
+    for value in [10, 5, 15, 2, 8, 12, 20]:
+        root = insert(root, value)
 
-    while True:
-        try:
-            mytree = insert(mytree, int(input("Data: ")))
-            print_tree(mytree)
-        except:
-            print()
-            break
-
-    print_tree(mytree)
+    print_tree(root)
+    root = delete(root, 10)
+    print_tree(root)
 
 
 if __name__ == "__main__":
