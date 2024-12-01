@@ -11,7 +11,7 @@ class Tree:
         self.right = Tree(data)
 
 
-def print_tree(tree, prefix="Root: ", level=0):
+def print_tree(tree: Tree | None, prefix="Root: ", level=0) -> None:
     """Prints the tree"""
     if tree:
         print((" " * 3) * level + prefix + str(tree.data))
@@ -24,11 +24,13 @@ def print_tree(tree, prefix="Root: ", level=0):
 
 
 def traverse(tree: Tree | None) -> None:
-    """Prints in-order traversal of tree"""
+    """Returns in order traversal of tree"""
+    result = []
     if tree:
-        traverse(tree.left)
-        print(tree.data, end=" ")
-        traverse(tree.right)
+        result.extend(traverse(tree.left))
+        result.append(tree.data)
+        result.extend(traverse(tree.right))
+    return result
 
 
 def insert(tree: Tree | None, data: int) -> Tree:
@@ -41,6 +43,42 @@ def insert(tree: Tree | None, data: int) -> Tree:
     elif data <= tree.data:
         tree.left = insert(tree.left, data)
         return tree
+
+
+def binary_search_list(data: list[int]) -> list[int]:
+    """Orders data list in optimal insert order for BST"""
+    data.sort()
+    length = len(data)
+
+    # Base cases
+    if length == 0:
+        return []
+    elif length == 1:
+        return [data[0]]
+
+    mid = length // 2
+    result = []
+
+    result.append(data[mid])
+    result.extend(binary_search_list(data[:mid]))
+    result.extend(binary_search_list(data[mid + 1 :]))
+
+    return result
+
+
+def create_tree(data: list[int]) -> Tree:
+    """Returns balanced BST using values in data"""
+    tree = None
+    for value in binary_search_list(data):
+        tree = insert(tree, value)
+    return tree
+
+
+def balanced_insert(tree: Tree, data: int) -> Tree:
+    """Returns balanced BST with new node inserted"""
+    tree_data = traverse(tree)
+    tree_data.append(data)
+    return create_tree(binary_search_list(tree_data))
 
 
 def minimum(tree: Tree) -> Tree:
@@ -101,13 +139,12 @@ def delete(tree: Tree | None, data: int) -> Tree:
 
 
 def main() -> None:
-    root = None
-    for value in [10, 5, 15, 2, 8, 12, 20]:
-        root = insert(root, value)
+    tree = None
+    while True:
+        tree = balanced_insert(tree, int(input("Input: ")))
 
-    print_tree(root)
-    root = delete(root, 10)
-    print_tree(root)
+        print_tree(tree)
+        print(traverse(tree))
 
 
 if __name__ == "__main__":
