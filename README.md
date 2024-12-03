@@ -1,2 +1,2 @@
 # Python-Projects
-My python projects
+A collection of random python programs I've written to try and learn more about computer science.
