@@ -39,10 +39,9 @@ def insert(tree: Tree | None, data: int) -> Tree:
         return Tree(data)
     elif data > tree.data:
         tree.right = insert(tree.right, data)
-        return tree
-    elif data <= tree.data:
+    else:
         tree.left = insert(tree.left, data)
-        return tree
+    return tree
 
 
 def binary_search_list(data: list[int]) -> list[int]:
