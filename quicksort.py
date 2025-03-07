@@ -1,4 +1,4 @@
-def quicksort(l: list[int]) -> list[int]:
+def quick_sort(l: list[int]) -> list[int]:
     length = len(l)
 
     if length == 0:  # Base case: empty list
@@ -16,12 +16,12 @@ def quicksort(l: list[int]) -> list[int]:
         else:
             right_list.append(element)
 
-    return quicksort(left_list) + [pivot] + quicksort(right_list)
+    return quick_sort(left_list) + [pivot] + quick_sort(right_list)
 
 
 def main() -> None:
     l = [5, 7, 2, 9, 1, 10]
-    print(quicksort(l))
+    print(quick_sort(l))
 
 
 if __name__ == "__main__":
