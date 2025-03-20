@@ -123,7 +123,7 @@ def djikstras(graph: Graph, start: int, target: int):
 
     path = []
     previous = target
-    while previous:
+    while previous is not None:
         path.insert(0, previous)
         previous = visited[previous][1]
 
