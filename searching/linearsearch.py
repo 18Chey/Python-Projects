@@ -1,7 +1,7 @@
 from typing import Any
 
 
-def linear_search(l: list[Any], target: Any) -> int:
+def linear_search(l: list[Any], target: Any) -> int | None:
     """Returns index of first occurence of target in list and None if not in list"""
     for i in range(len(l)):
         if l[i] == target:

@@ -7,10 +7,8 @@ class Graph:
             self.nodes[value] = []
 
     def add_edge(self, node1: int, node2: int, weight: int, directed: bool):
-        if node1 not in self.nodes:
-            self.nodes[node1] = []
-        if node2 not in self.nodes:
-            self.nodes[node2] = []
+        self.add_node(node1)
+        self.add_node(node2)
 
         self.nodes[node1].append((node2, weight))
         if not directed:

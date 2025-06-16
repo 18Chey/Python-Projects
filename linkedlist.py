@@ -1,55 +1,51 @@
-class LinkedList:
-    def __init__(self, data):
+class Node:
+    def __init__(self, data: int, next):
         self.data = data
-        self.next = None
+        self.next = next
 
 
-def traverse(linked_list: LinkedList):
-    result = []
-    while linked_list:
-        result.append(linked_list.data)
-        linked_list = linked_list.next
-    print(result)
+class LinkedList:
+    def __init__(self, head: Node):
+        self.head = head
+
+    def traverse(self):
+        current_node = self.head
+        while current_node.next != None:
+            print(current_node.data)
+            current_node = current_node.next
+
+    def insert(self, value: int, position: int):
+        # Create a new node
+        new_node = Node(value)
+
+        # If inserting at the start
+        if position == 0:
+            new_node.next = self.head
+            self.head = new_node
+
+        # If inserting at the end
+        elif position == -1:
+            while current_node.next != None:
+                current_node = current_node.next
+            current_node.next = new_node
+
+        # Traverse until position reached
+        else:
+            current_node = self.head
+            for i in range(position - 1):
+                current_node = current_node.next
+
+            new_node.next = current_node.next
+            current_node.next = new_node
+
+    def delete(self, target: int):
+        current_node = self.head
+
+        while current_node.next.data != target:
+            current_node = current_node.next
+
+        current_node.next = current_node.next.next
 
 
-def insert_at_beginning(linked_list: LinkedList, data: int):
-    new = LinkedList(data)
-    new.next = linked_list
-    return new
-
-
-def delete_from_beginning(linked_list: LinkedList):
-    return linked_list.next
-
-
-def insert_at_end(linked_list: LinkedList, data: int):
-    head = linked_list
-    while linked_list.next:
-        linked_list = linked_list.next
-    linked_list.next = LinkedList(data)
-    return head
-
-
-def insert_at_position(linked_list: LinkedList, data: int, position: int):
-    head = linked_list
-    if position == 0:
-        return insert_at_beginning(linked_list, data)
-    for i in range(position - 1):
-        linked_list = linked_list.next
-    new = LinkedList(data)
-    new.next = linked_list.next
-    linked_list.next = new
-    return head
-
-
-def main():
-    mylist = LinkedList(0)
-    for i in range(1, 10):
-        mylist = insert_at_beginning(mylist, i)
-    traverse(mylist)
-    mylist = delete_from_beginning(mylist)
-    traverse(mylist)
-
-
-if __name__ == "__main__":
-    main()
+head_node = Node(0, None)
+mylist = LinkedList(head_node)
